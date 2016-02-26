@@ -1,0 +1,22 @@
+{
+    "name": "mashbo/mashbot-clitools",
+    "description": "Library, script and tools for building CLI apps",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Adam Quaile",
+            "email": "aquaile@mashbo.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Mashbo\\Mashbot\\CliTools\\": "src/",
+            "Mashbo\\Mashbot\\CliTools\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.2"
+    }
+}
