@@ -1,5 +1,5 @@
 {
-    "name": "mashbo/mashbot-clitools",
+    "name": "mashbo/console-toolkit",
     "description": "Library, script and tools for building CLI apps",
     "license": "proprietary",
     "authors": [
@@ -10,11 +10,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Mashbo\\Mashbot\\CliTools\\": "src/",
-            "Mashbo\\Mashbot\\CliTools\\Tests\\": "tests/"
+            "Mashbo\\ConsoleToolkit\\": "src/",
+            "Mashbo\\ConsoleToolkit\\Tests\\": "tests/"
         }
     },
     "require": {
+        "symfony/console": "^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.2"
