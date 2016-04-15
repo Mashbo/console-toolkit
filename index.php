@@ -1,263 +1,12 @@
 <?php
 
+use Mashbo\ConsoleToolkit\ConsoleToolkit;
+use Mashbo\ConsoleToolkit\Keyboard;
+use Mashbo\ConsoleToolkit\KeyboardHandler;
+use Mashbo\ConsoleToolkit\Terminal;
+use Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion\SingleChoiceQuestionFormatter;
+
 require __DIR__.'/vendor/autoload.php';
-
-//$input = new \Symfony\Component\Console\Input\ArgvInput();
-$output = new \Symfony\Component\Console\Output\StreamOutput(STDOUT);
-
-//$output->writeln(['a', 'b']);
-
-
-class Keyboard
-{
-    private $stream;
-
-    /**
-     * @var KeyboardHandler[]
-     */
-    private $handlers;
-
-    public function __construct($stream, KeyboardHandler $handler)
-    {
-        $this->stream = $stream;
-        $this->handlers = [$handler];
-    }
-
-    /**
-     * @param KeyboardHandler $handler
-     */
-    public function setHandler(KeyboardHandler $handler)
-    {
-        array_push($this->handlers, $handler);
-    }
-
-    private function handler()
-    {
-        return $this->handlers[count($this->handlers) - 1];
-    }
-
-    public function resetHandler()
-    {
-        array_pop($this->handlers);
-    }
-
-    public function next()
-    {
-        $multibyteChars = [
-            chr(27) => [
-                chr(91) => [
-                    "A" => 'upArrow',
-                    "B" => 'downArrow',
-                    "C" => 'rightArrow',
-                    "D" => 'leftArrow',
-                    "H" => 'home',
-                    "F" => 'end',
-                    "5" => 'pageUp',
-                    "6" => [chr(126) => 'pageDown']
-                ]
-            ],
-            chr(127)    => 'backspace',
-            chr(9)      => 'tab',
-            chr(10)     => 'enter'
-        ];
-
-        $mapping = $multibyteChars;
-        $readFromStream = "";
-        do {
-            $c = stream_get_contents($this->stream, 1);
-//            exec("say -r 300 \"" . ord($c) . " or " . ((strtoupper($c) === $c) ? ' capital ' : '') . $c . ".\"");
-
-            $readFromStream .= $c;
-
-            if (array_key_exists($c, $mapping)) {
-
-                if (is_string($mapping[$c])) {
-                    $method = $mapping[$c];
-                    $this->handler()->$method();
-                    break;
-                } elseif (is_array($mapping[$c])) {
-                    $mapping = $mapping[$c];
-                    continue;
-                } else {
-                    throw new \LogicException("Array key set, but found neither string nor array");
-                }
-            }
-
-            $this->handler()->character($readFromStream);
-            break;
-
-        } while (true);
-    }
-}
-
-interface KeyboardHandler
-{
-    public function character($char);
-
-    public function leftArrow();
-    public function rightArrow();
-    public function upArrow();
-    public function downArrow();
-    public function home();
-    public function end();
-    public function pageUp();
-    public function pageDown();
-    public function backspace();
-    public function tab();
-    public function enter();
-}
-
-class EchoKeyboardHandler implements KeyboardHandler
-{
-    /**
-     * @var
-     */
-    private $stream;
-
-    public function __construct($stream)
-    {
-        $this->stream = $stream;
-    }
-
-    public function character($char)
-    {
-        $this->write($char);
-    }
-
-    public function leftArrow()
-    {
-        fwrite($this->stream, '←');
-    }
-
-
-    public function rightArrow()
-    {
-        fwrite($this->stream, '→');
-    }
-
-    public function upArrow()
-    {
-        fwrite($this->stream, '↑');
-    }
-
-    public function downArrow()
-    {
-        fwrite($this->stream, '↓');
-    }
-
-
-    public function home()
-    {
-        $this->write('⇐');
-    }
-
-    public function end()
-    {
-        $this->write('⇒');
-    }
-
-    public function pageUp()
-    {
-        $this->write('⇑');
-    }
-
-    public function pageDown()
-    {
-        $this->write('⇓');
-    }
-
-    public function backspace()
-    {
-        $this->write('⇦');
-    }
-
-    public function tab()
-    {
-        $this->write('➡');
-    }
-
-    public function enter()
-    {
-        $this->write('↳');
-    }
-
-    /**
-     * @param $string
-     */
-    private function write($string)
-    {
-        fwrite($this->stream, $string);
-        fflush($this->stream);
-    }
-}
-
-class NullKeyboardHandler implements KeyboardHandler
-{
-
-    public function character($char)
-    {
-    }
-
-    public function leftArrow()
-    {
-    }
-
-    public function rightArrow()
-    {
-    }
-
-    public function upArrow()
-    {
-    }
-
-    public function downArrow()
-    {
-    }
-
-    public function home()
-    {
-    }
-
-    public function end()
-    {
-    }
-
-    public function pageUp()
-    {
-    }
-
-    public function pageDown()
-    {
-    }
-
-    public function backspace()
-    {
-    }
-
-    public function tab()
-    {
-    }
-
-    public function enter()
-    {
-    }
-}
-
-class Terminal
-{
-    private $stream;
-
-    public function __construct($stream)
-    {
-        $this->stream = $stream;
-    }
-
-    public function write($string)
-    {
-        fwrite($this->stream, $string);
-    }
-
-}
 
 class SingleChoiceQuestionHelper implements KeyboardHandler
 {
@@ -273,22 +22,27 @@ class SingleChoiceQuestionHelper implements KeyboardHandler
     private $choices;
     private $choiceMade = false;
     private $choicesStringLength = 0;
+    /**
+     * @var SingleChoiceQuestionFormatter
+     */
+    private $questionFormatter;
 
-    public function __construct(Keyboard $keyboard, Terminal $terminal)
+    public function __construct(Keyboard $keyboard, Terminal $terminal, SingleChoiceQuestionFormatter $questionFormatter)
     {
         $this->keyboard = $keyboard;
         $this->terminal = $terminal;
+        $this->questionFormatter = $questionFormatter;
     }
 
     public function ask($question, $choices)
     {
-        $this->keyboard->setHandler($this);
+        $this->keyboard->pushHandler($this);
         $this->terminal->write($question . "\n\n");
 
         $this->selectedChoiceIndex = 0;
         $this->choices = $choices;
 
-        $this->outputChoices($this->choices, $this->selectedChoiceIndex);
+        $this->updateChoice($this->selectedChoiceIndex);
 
         while (!$this->choiceMade) {
             $this->keyboard->next();
@@ -300,21 +54,9 @@ class SingleChoiceQuestionHelper implements KeyboardHandler
 
     }
 
-    private function outputChoices($choices, $selectedIndex)
+    private function updateChoice($selectedIndex)
     {
-        $choicesString = '';
-        foreach ($choices as $index => $choice) {
-
-            $selected = $index == $selectedIndex;
-            $choicesString .= " ";
-
-            $choicesString .= $selected
-                ? chr(27)."[32m" . '➜'
-                : '○';
-            $choicesString .= " " . $choice;
-            $choicesString .= $selected ? chr(27) ."[0m" : '';
-            $choicesString .= "\n";
-        }
+        $choicesString = $this->questionFormatter->format($this->choices, $selectedIndex);
         $this->choicesStringLength = mb_strlen($choicesString);
         $this->terminal->write($choicesString);
 
@@ -338,7 +80,7 @@ class SingleChoiceQuestionHelper implements KeyboardHandler
         $this->selectedChoiceIndex = ($this->selectedChoiceIndex + count($this->choices)) % count($this->choices);
 
         $this->resetPositionForChoices();
-        $this->outputChoices($this->choices, $this->selectedChoiceIndex);
+        $this->updateChoice($this->selectedChoiceIndex);
     }
 
     public function downArrow()
@@ -347,7 +89,7 @@ class SingleChoiceQuestionHelper implements KeyboardHandler
         $this->selectedChoiceIndex = ($this->selectedChoiceIndex + count($this->choices)) % count($this->choices);
 
         $this->resetPositionForChoices();
-        $this->outputChoices($this->choices, $this->selectedChoiceIndex);
+        $this->updateChoice($this->selectedChoiceIndex);
     }
 
     public function home()
@@ -416,7 +158,7 @@ class SingleLineTextValueHelper implements KeyboardHandler
     public function ask($question)
     {
         $this->terminal->write($question . " ");
-        $this->keyboard->setHandler($this);
+        $this->keyboard->pushHandler($this);
 
         $this->currentValue = '';
         $this->previousValueLength = 0;
@@ -480,15 +222,13 @@ class SingleLineTextValueHelper implements KeyboardHandler
     }
 }
 
+ConsoleToolkit::disableDefaultBehaviour();
+//$keyboard = new Keyboard(STDIN, new NullKeyboardHandler());
 
+$terminal = new Terminal(STDIN, STDOUT);
+$keyboard = $terminal->keyboard();
 
-readline_callback_handler_install('', function() { });
-//$keyboard = new Keyboard(STDIN, new EchoKeyboardHandler(STDOUT));
-$keyboard = new Keyboard(STDIN, new NullKeyboardHandler(STDOUT));
-//$keyboard = new Keyboard(STDIN);
-$terminal = new Terminal(STDOUT);
-
-$singleChoiceQuestionHelper = new SingleChoiceQuestionHelper($keyboard, $terminal);
+$singleChoiceQuestionHelper = new SingleChoiceQuestionHelper($keyboard, $terminal, new SingleChoiceQuestionFormatter());
 
 $header = <<<HEADER
  __  __           _     _           _       
@@ -501,21 +241,9 @@ $header = <<<HEADER
 HEADER;
 
 $terminal->write($header);
-$seed = $singleChoiceQuestionHelper->ask('What type of project would you like to create?', ['Default', 'Symfony', 'Wordpress']);
+$seed = $singleChoiceQuestionHelper->ask('What type of project would you like to create?', ['Default', 'Symfony', 'Wordpress', 'Magento']);
 $terminal->write("You chose $seed\n\n");
 
 
 $singleLineTextValueHelper = new SingleLineTextValueHelper($keyboard, $terminal);
 $singleLineTextValueHelper->ask('What\'s your project called?');
-
-//while (true) {
-//
-//    $r = array(STDIN);
-//    $w = NULL;
-//    $e = NULL;
-//    $n = stream_select($r, $w, $e, 0);
-//
-//    if ($n && in_array(STDIN, $r)) {
-//        $keyboard->next();
-//    }
-//}
