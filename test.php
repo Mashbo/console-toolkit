@@ -3,7 +3,7 @@
 use Mashbo\ConsoleToolkit\ConsoleToolkit;
 use Mashbo\ConsoleToolkit\Terminal;
 
-require __DIR__.'/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 
 ConsoleToolkit::disableDefaultBehaviour();

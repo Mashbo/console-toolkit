@@ -49,7 +49,7 @@ class SingleChoiceQuestionKeyboardHandler implements KeyboardHandler
     public function pageUp() {}
     public function pageDown() {}
     public function backspace() {}
-    public function tab(){}
+    public function tab() {}
 
     
     public function upArrow()

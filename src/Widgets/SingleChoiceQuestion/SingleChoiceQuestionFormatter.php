@@ -15,10 +15,10 @@ class SingleChoiceQuestionFormatter
             $choicesString .= " ";
 
             $choicesString .= $selected
-                ? chr(27)."[32m" . '➜'
+                ? chr(27) . "[32m" . '➜'
                 : '○';
             $choicesString .= " " . $choice;
-            $choicesString .= $selected ? chr(27) ."[0m" : '';
+            $choicesString .= $selected ? chr(27) . "[0m" : '';
             $choicesString .= "\n";
         }
 

@@ -36,7 +36,7 @@ class RedrawableTextWriter
             $this->terminal->write(Ansi::cursorToStartOfLine());
             $this->terminal->write(Ansi::eraseToEndOfLine());
 
-            for ($i = count($lines)-1; $i > 0; $i--) {
+            for ($i = count($lines) - 1; $i > 0; $i--) {
                 $this->terminal->write(Ansi::cursorUp());
                 $this->terminal->write(Ansi::eraseToEndOfLine());
             }
