@@ -7,167 +7,14 @@ use Mashbo\ConsoleToolkit\Terminal;
 use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextKeyboardHandler;
 use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextWriter;
 use Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion\SingleChoiceQuestionFormatter;
+use Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion\SingleChoiceQuestionHelper;
+use Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion\SingleChoiceQuestionKeyboardHandler;
+use Mashbo\ConsoleToolkit\Widgets\Text\TextQuestionHelper;
 
 require __DIR__.'/vendor/autoload.php';
 
-class SingleChoiceQuestionHelper implements KeyboardHandler
-{
-    /**
-     * @var Keyboard
-     */
-    private $keyboard;
-    /**
-     * @var Terminal
-     */
-    private $terminal;
-    private $selectedChoiceIndex;
-    private $choices;
-    private $choiceMade = false;
-    private $choicesStringLength = 0;
-    /**
-     * @var SingleChoiceQuestionFormatter
-     */
-    private $questionFormatter;
-
-    public function __construct(Keyboard $keyboard, Terminal $terminal, SingleChoiceQuestionFormatter $questionFormatter)
-    {
-        $this->keyboard = $keyboard;
-        $this->terminal = $terminal;
-        $this->questionFormatter = $questionFormatter;
-    }
-
-    public function ask($question, $choices)
-    {
-        $this->keyboard->pushHandler($this);
-        $this->terminal->write($question . "\n\n");
-
-        $this->selectedChoiceIndex = 0;
-        $this->choices = $choices;
-
-        $this->updateChoice($this->selectedChoiceIndex);
-
-        while (!$this->choiceMade) {
-            $this->keyboard->next();
-        }
-
-        $this->keyboard->resetHandler();
-
-        return $this->choices[$this->selectedChoiceIndex];
-
-    }
-
-    private function updateChoice($selectedIndex)
-    {
-        $choicesString = $this->questionFormatter->format($this->choices, $selectedIndex);
-        $this->choicesStringLength = mb_strlen($choicesString);
-        $this->terminal->write($choicesString);
-
-    }
-
-    public function character($char)
-    {
-    }
-
-    public function leftArrow()
-    {
-    }
-
-    public function rightArrow()
-    {
-    }
-
-    public function upArrow()
-    {
-        $this->selectedChoiceIndex = $this->selectedChoiceIndex - 1;
-        $this->selectedChoiceIndex = ($this->selectedChoiceIndex + count($this->choices)) % count($this->choices);
-
-        $this->resetPositionForChoices();
-        $this->updateChoice($this->selectedChoiceIndex);
-    }
-
-    public function downArrow()
-    {
-        $this->selectedChoiceIndex = $this->selectedChoiceIndex + 1;
-        $this->selectedChoiceIndex = ($this->selectedChoiceIndex + count($this->choices)) % count($this->choices);
-
-        $this->resetPositionForChoices();
-        $this->updateChoice($this->selectedChoiceIndex);
-    }
-
-    public function home()
-    {
-
-    }
-
-    public function end()
-    {
-
-    }
-
-    public function pageUp()
-    {
-
-    }
-
-    public function pageDown()
-    {
-
-    }
-
-    public function backspace()
-    {
-
-    }
-
-    public function tab()
-    {
-
-    }
-
-    public function enter()
-    {
-        $this->choiceMade = true;
-    }
-
-    private function resetPositionForChoices()
-    {
-        $this->terminal->write(chr(27) . "[" . count($this->choices) . "A");
-
-    }
-}
-
-class SingleLineTextValueHelper
-{
-    /**
-     * @var Keyboard
-     */
-    private $keyboard;
-    /**
-     * @var Terminal
-     */
-    private $terminal;
-
-    public function __construct(Keyboard $keyboard, Terminal $terminal)
-    {
-        $this->keyboard = $keyboard;
-        $this->terminal = $terminal;
-    }
-
-    public function ask($question)
-    {
-        $this->terminal->write($question . " ");
-
-        return $this->keyboard->interact(
-            new RedrawableTextKeyboardHandler(
-                new RedrawableTextWriter($this->terminal),
-                $this->keyboard
-            )
-        );
-    }
-}
 
 ConsoleToolkit::disableDefaultBehaviour();
-//$keyboard = new Keyboard(STDIN, new NullKeyboardHandler());
 
 $terminal = new Terminal(STDIN, STDOUT);
 $keyboard = $terminal->keyboard();
@@ -186,9 +33,9 @@ $header = <<<HEADER
 HEADER;
 
 $terminal->write($header);
-//$seed = $singleChoiceQuestionHelper->ask('What type of project would you like to create?', ['Default', 'Symfony', 'Wordpress', 'Magento']);
-//$terminal->write("You chose $seed\n\n");
+$seed = $singleChoiceQuestionHelper->ask('What type of project would you like to create?', ['Default', 'Symfony', 'Wordpress', 'Magento']);
+$terminal->write("You chose $seed\n\n");
 
 
-$singleLineTextValueHelper = new SingleLineTextValueHelper($keyboard, $terminal);
-$terminal->write("\nYou chose: " . $singleLineTextValueHelper->ask('What\'s your project called?'));
+$singleLineTextValueHelper = new TextQuestionHelper($keyboard, $terminal);
+$terminal->write("\nYou chose: " . $singleLineTextValueHelper->ask('What\'s your project called?') . "\n");

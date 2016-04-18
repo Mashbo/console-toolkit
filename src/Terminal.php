@@ -50,9 +50,4 @@ class Terminal
     {
         fwrite($this->out, $string);
     }
-
-    public static function green($text)
-    {
-        return chr(27) . "[32m" . $text . chr(27) . "[0m";
-    }
 }
