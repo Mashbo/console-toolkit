@@ -4,6 +4,8 @@ use Mashbo\ConsoleToolkit\ConsoleToolkit;
 use Mashbo\ConsoleToolkit\Keyboard;
 use Mashbo\ConsoleToolkit\KeyboardHandler;
 use Mashbo\ConsoleToolkit\Terminal;
+use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextKeyboardHandler;
+use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextWriter;
 use Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion\SingleChoiceQuestionFormatter;
 
 require __DIR__.'/vendor/autoload.php';
@@ -134,7 +136,7 @@ class SingleChoiceQuestionHelper implements KeyboardHandler
     }
 }
 
-class SingleLineTextValueHelper implements KeyboardHandler
+class SingleLineTextValueHelper
 {
     /**
      * @var Keyboard
@@ -145,10 +147,6 @@ class SingleLineTextValueHelper implements KeyboardHandler
      */
     private $terminal;
 
-    private $currentValue = '';
-    private $ended = false;
-    private $previousValueLength = 0;
-
     public function __construct(Keyboard $keyboard, Terminal $terminal)
     {
         $this->keyboard = $keyboard;
@@ -158,67 +156,13 @@ class SingleLineTextValueHelper implements KeyboardHandler
     public function ask($question)
     {
         $this->terminal->write($question . " ");
-        $this->keyboard->pushHandler($this);
 
-        $this->currentValue = '';
-        $this->previousValueLength = 0;
-
-        while (!$this->ended) {
-            $this->keyboard->next();
-        }
-
-        $this->keyboard->resetHandler();
-        return $this->currentValue;
-    }
-
-    public function character($char)
-    {
-        $this->previousValueLength = strlen($this->currentValue);
-        $this->currentValue .= $char;
-        $this->redrawCurrentValue();
-    }
-
-    private function redrawCurrentValue()
-    {
-        if ($this->previousValueLength > 0) {
-            for ($i = 0; $i < $this->previousValueLength; $i++) {
-                $this->terminal->write(chr(27) . "[1D");
-                $this->terminal->write(" ");
-                $this->terminal->write(chr(27) . "[1D");
-            }
-        }
-        $this->terminal->write($this->currentValue);
-    }
-
-    public function leftArrow() {}
-    public function rightArrow() {}
-    public function upArrow() {}
-
-    public function downArrow() {}
-
-    public function home() {}
-
-    public function end() {}
-
-    public function pageUp() {}
-
-    public function pageDown() {}
-
-    public function backspace()
-    {
-        $len = strlen($this->currentValue);
-        $this->previousValueLength = $len;
-        if ($len > 0) {
-            $this->currentValue = substr($this->currentValue, 0, $len -1);
-        }
-        $this->redrawCurrentValue();
-    }
-
-    public function tab() {}
-
-    public function enter()
-    {
-        $this->ended = true;
+        return $this->keyboard->interact(
+            new RedrawableTextKeyboardHandler(
+                new RedrawableTextWriter($this->terminal),
+                $this->keyboard
+            )
+        );
     }
 }
 
@@ -227,6 +171,7 @@ ConsoleToolkit::disableDefaultBehaviour();
 
 $terminal = new Terminal(STDIN, STDOUT);
 $keyboard = $terminal->keyboard();
+
 
 $singleChoiceQuestionHelper = new SingleChoiceQuestionHelper($keyboard, $terminal, new SingleChoiceQuestionFormatter());
 
@@ -241,9 +186,9 @@ $header = <<<HEADER
 HEADER;
 
 $terminal->write($header);
-$seed = $singleChoiceQuestionHelper->ask('What type of project would you like to create?', ['Default', 'Symfony', 'Wordpress', 'Magento']);
-$terminal->write("You chose $seed\n\n");
+//$seed = $singleChoiceQuestionHelper->ask('What type of project would you like to create?', ['Default', 'Symfony', 'Wordpress', 'Magento']);
+//$terminal->write("You chose $seed\n\n");
 
 
 $singleLineTextValueHelper = new SingleLineTextValueHelper($keyboard, $terminal);
-$singleLineTextValueHelper->ask('What\'s your project called?');
+$terminal->write("\nYou chose: " . $singleLineTextValueHelper->ask('What\'s your project called?'));

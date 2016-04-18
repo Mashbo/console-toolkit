@@ -11,6 +11,9 @@ class Keyboard
      */
     private $handlers;
 
+    private $loopEnabled = false;
+    private $interactionReturnValue;
+
     public function __construct($stream, KeyboardHandler $handler)
     {
         $this->stream = $stream;
@@ -80,5 +83,26 @@ class Keyboard
             break;
 
         } while (true);
+    }
+
+    public function interact(KeyboardHandler $keyboardHandler)
+    {
+        $this->interactionReturnValue = null;
+        $this->loopEnabled = true;
+
+        $this->pushHandler($keyboardHandler);
+
+        while ($this->loopEnabled) {
+            $this->next();
+        }
+        $this->resetHandler();
+
+        return $this->interactionReturnValue;
+    }
+
+    public function stopInteraction($returnValue = null)
+    {
+        $this->interactionReturnValue = $returnValue;
+        $this->loopEnabled = false;
     }
 }
