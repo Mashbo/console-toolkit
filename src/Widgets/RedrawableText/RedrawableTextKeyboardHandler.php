@@ -51,7 +51,7 @@ class RedrawableTextKeyboardHandler implements KeyboardHandler
         $len = strlen($this->currentValue);
         $this->previousValueLength = $len;
         if ($len > 0) {
-            $this->currentValue = substr($this->currentValue, 0, $len -1);
+            $this->currentValue = substr($this->currentValue, 0, $len - 1);
         }
         $this->writer->write($this->currentValue);
     }

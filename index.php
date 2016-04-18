@@ -1,17 +1,12 @@
 <?php
 
 use Mashbo\ConsoleToolkit\ConsoleToolkit;
-use Mashbo\ConsoleToolkit\Keyboard;
-use Mashbo\ConsoleToolkit\KeyboardHandler;
 use Mashbo\ConsoleToolkit\Terminal;
-use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextKeyboardHandler;
-use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextWriter;
 use Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion\SingleChoiceQuestionFormatter;
 use Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion\SingleChoiceQuestionHelper;
-use Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion\SingleChoiceQuestionKeyboardHandler;
 use Mashbo\ConsoleToolkit\Widgets\Text\TextQuestionHelper;
 
-require __DIR__.'/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 
 ConsoleToolkit::disableDefaultBehaviour();
