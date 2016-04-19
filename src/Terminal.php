@@ -3,6 +3,7 @@
 namespace Mashbo\ConsoleToolkit;
 
 use Mashbo\ConsoleToolkit\Exceptions\TerminalRequiresStreamException;
+use Mashbo\ConsoleToolkit\Interaction\InteractionList;
 use Mashbo\ConsoleToolkit\KeyboardHandlers\NullKeyboardHandler;
 
 class Terminal
@@ -22,6 +23,11 @@ class Terminal
      */
     private $keyboard;
 
+    /**
+     * @var InteractionList
+     */
+    private $interactionList;
+
     public function __construct($in, $out)
     {
         if (!is_resource($out) || 'stream' !== get_resource_type($out)) {
@@ -33,6 +39,8 @@ class Terminal
         $this->out = $out;
         $this->in = $in;
         $this->keyboard = new Keyboard($this->in, new NullKeyboardHandler());
+
+        $this->interactionList = new InteractionList($this);
     }
 
     /**
@@ -49,5 +57,13 @@ class Terminal
     public function write($string)
     {
         fwrite($this->out, $string);
+    }
+
+    /**
+     * @return InteractionList
+     */
+    public function interaction()
+    {
+        return $this->interactionList;
     }
 }

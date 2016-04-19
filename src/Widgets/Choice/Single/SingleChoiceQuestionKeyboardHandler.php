@@ -1,6 +1,6 @@
 <?php
 
-namespace Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion;
+namespace Mashbo\ConsoleToolkit\Widgets\Choice\Single;
 
 use Mashbo\ConsoleToolkit\Keyboard;
 use Mashbo\ConsoleToolkit\KeyboardHandler;

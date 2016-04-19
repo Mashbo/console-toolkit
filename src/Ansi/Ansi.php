@@ -11,7 +11,7 @@ final class Ansi
 
     public static function green($text)
     {
-        return "\e[32m$text\e[0m";
+        return "\e[32m$text\e[39m";
     }
 
     public static function cursorUp()
@@ -27,5 +27,10 @@ final class Ansi
     public static function cursorToStartOfLine()
     {
         return "\e[0G";
+    }
+
+    public static function bold($text)
+    {
+        return "\e[1m$text\e[22m";
     }
 }
