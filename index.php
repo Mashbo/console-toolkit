@@ -15,20 +15,6 @@ ConsoleToolkit::disableDefaultBehaviour();
 $terminal = new Terminal(STDIN, STDOUT);
 $keyboard = $terminal->keyboard();
 
-//echo Ansi::green('green');
-//echo Ansi::bold('bold');
-//echo Ansi::bold(Ansi::green('boldgreen'));
-//echo 'std';
-//echo Ansi::green(Ansi::bold('greenbold'));
-//echo 'std';
-//exit;
-
-
-//$singleChoiceQuestionHelper = new SingleChoiceQuestionHelper($keyboard, $terminal, new SingleChoiceQuestionFormatter());
-//
-//$seed = $singleChoiceQuestionHelper->ask('What type of project would you like to create?', ['Default', 'Symfony', 'Wordpress', 'Magento']);
-//$terminal->write("You chose $seed\n\n");
-
 $multipleChoiceQuestionHelper = new MultipleChoiceQuestionHelper($keyboard, $terminal, new MultipleChoiceQuestionFormatter());
 
 $services = $multipleChoiceQuestionHelper->ask('Services to enable', ['Web (80)', 'SSH (22)', 'FTP (21)']);
