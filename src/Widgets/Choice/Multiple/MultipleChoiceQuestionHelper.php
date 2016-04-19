@@ -1,12 +1,13 @@
 <?php
 
-namespace Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion;
+namespace Mashbo\ConsoleToolkit\Widgets\Choice\Multiple;
 
 use Mashbo\ConsoleToolkit\Keyboard;
 use Mashbo\ConsoleToolkit\Terminal;
+use Mashbo\ConsoleToolkit\Widgets\Choice\Multiple\MultipleChoiceQuestionFormatter;
 use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextWriter;
 
-class SingleChoiceQuestionHelper
+class MultipleChoiceQuestionHelper
 {
     /**
      * @var Keyboard
@@ -18,11 +19,11 @@ class SingleChoiceQuestionHelper
     private $terminal;
 
     /**
-     * @var SingleChoiceQuestionFormatter
+     * @var MultipleChoiceQuestionFormatter
      */
     private $questionFormatter;
 
-    public function __construct(Keyboard $keyboard, Terminal $terminal, SingleChoiceQuestionFormatter $questionFormatter)
+    public function __construct(Keyboard $keyboard, Terminal $terminal, MultipleChoiceQuestionFormatter $questionFormatter)
     {
         $this->keyboard = $keyboard;
         $this->terminal = $terminal;
@@ -34,10 +35,10 @@ class SingleChoiceQuestionHelper
         $this->terminal->write($question . "\n");
 
         $writer = new RedrawableTextWriter($this->terminal);
-        $writer->write($this->questionFormatter->format($choices, 0));
+        $writer->write($this->questionFormatter->format($choices, [], 0));
 
         return $this->keyboard->interact(
-            new SingleChoiceQuestionKeyboardHandler(
+            new MultipleChoiceQuestionKeyboardHandler(
                 $this->keyboard,
                 $this->questionFormatter,
                 $writer,

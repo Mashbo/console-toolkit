@@ -1,7 +1,8 @@
 <?php
 
-namespace Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion;
+namespace Mashbo\ConsoleToolkit\Widgets\Choice\Single;
 
+use Mashbo\ConsoleToolkit\Ansi\Ansi;
 use Mashbo\ConsoleToolkit\Terminal;
 
 class SingleChoiceQuestionFormatter
@@ -15,10 +16,8 @@ class SingleChoiceQuestionFormatter
             $choicesString .= " ";
 
             $choicesString .= $selected
-                ? chr(27) . "[32m" . '➜'
-                : '○';
-            $choicesString .= " " . $choice;
-            $choicesString .= $selected ? chr(27) . "[0m" : '';
+                ? Ansi::green("➜ $choice")
+                : "○ $choice";
             $choicesString .= "\n";
         }
 

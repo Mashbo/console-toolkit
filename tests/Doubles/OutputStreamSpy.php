@@ -2,6 +2,8 @@
 
 namespace Mashbo\ConsoleToolkit\Tests\Doubles;
 
+use Mashbo\ConsoleToolkit\Tests\Support\BinaryStringTestHelper;
+
 class OutputStreamSpy
 {
     public static function create()
@@ -18,6 +20,6 @@ class OutputStreamSpy
             $actual .= $nextLine;
         }
         
-        \PHPUnit_Framework_Assert::assertEquals($expected, $actual);
+        BinaryStringTestHelper::assertEquals($expected, $actual);
     }
 }

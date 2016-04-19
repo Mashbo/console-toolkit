@@ -1,18 +1,15 @@
 <?php
 
-namespace Mashbo\ConsoleToolkit\Tests\Unit\Widgets\SingleChoiceQuestion;
+namespace Mashbo\ConsoleToolkit\Tests\Unit\Widgets\Choice\Single;
 
 use Mashbo\ConsoleToolkit\Ansi\Ansi;
-use Mashbo\ConsoleToolkit\Terminal;
-use Mashbo\ConsoleToolkit\Widgets\SingleChoiceQuestion\SingleChoiceQuestionFormatter;
+use Mashbo\ConsoleToolkit\Tests\Support\BinaryStringTestHelper;
+use Mashbo\ConsoleToolkit\Widgets\Choice\Single\SingleChoiceQuestionFormatter;
 
 class SingleChoiceQuestionFormatterTest extends \PHPUnit_Framework_TestCase
 {
     public function test_first_item_is_selected()
     {
-        $greenStart = chr(27)."[32m";
-        $greenEnd   = chr(27)."[0m";
-
         $expected = implode("\n", [
             " ○ A",
             " " . Ansi::green("➜ B"),
@@ -21,6 +18,6 @@ class SingleChoiceQuestionFormatterTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $sut = new SingleChoiceQuestionFormatter();
-        $this->assertEquals($expected, $sut->format(['A', 'B', 'C'], 1));
+        BinaryStringTestHelper::assertEquals($expected, $sut->format(['A', 'B', 'C'], 1));
     }
 }
