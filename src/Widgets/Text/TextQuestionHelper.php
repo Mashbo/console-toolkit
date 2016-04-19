@@ -28,11 +28,15 @@ class TextQuestionHelper
     {
         $this->terminal->write($question . " ");
 
-        return $this->keyboard->interact(
+        $response = $this->keyboard->interact(
             new RedrawableTextKeyboardHandler(
                 new RedrawableTextWriter($this->terminal),
                 $this->keyboard
             )
         );
+
+        $this->terminal->write("\n");
+
+        return $response;
     }
 }
