@@ -1,6 +1,8 @@
 <?php
 
-namespace Mashbo\ConsoleToolkit;
+namespace Mashbo\ConsoleToolkit\Keyboard;
+
+use Mashbo\ConsoleToolkit\Keyboard\Handling\KeyboardHandler;
 
 class Keyboard
 {

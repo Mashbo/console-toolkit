@@ -2,12 +2,14 @@
 
 namespace Mashbo\ConsoleToolkit\Widgets\Choice\Multiple;
 
-use Mashbo\ConsoleToolkit\Keyboard;
-use Mashbo\ConsoleToolkit\KeyboardHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\ArrowKeyHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\EnterKeyHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Keyboard;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\CharacterKeyHandler;
 use Mashbo\ConsoleToolkit\Widgets\Choice\Multiple\MultipleChoiceQuestionFormatter;
 use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextWriter;
 
-class MultipleChoiceQuestionKeyboardHandler implements KeyboardHandler
+class MultipleChoiceQuestionKeyboardHandler implements CharacterKeyHandler, ArrowKeyHandler, EnterKeyHandler
 {
     /**
      * @var
@@ -57,13 +59,6 @@ class MultipleChoiceQuestionKeyboardHandler implements KeyboardHandler
     }
     public function leftArrow() {}
     public function rightArrow() {}
-    public function home() {}
-    public function end() {}
-    public function pageUp() {}
-    public function pageDown() {}
-    public function backspace() {}
-    public function tab() {}
-
     
     public function upArrow()
     {

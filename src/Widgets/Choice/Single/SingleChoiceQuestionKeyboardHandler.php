@@ -2,11 +2,14 @@
 
 namespace Mashbo\ConsoleToolkit\Widgets\Choice\Single;
 
-use Mashbo\ConsoleToolkit\Keyboard;
-use Mashbo\ConsoleToolkit\KeyboardHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\ArrowKeyHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\CharacterKeyHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\EnterKeyHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\KeyboardHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Keyboard;
 use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextWriter;
 
-class SingleChoiceQuestionKeyboardHandler implements KeyboardHandler
+class SingleChoiceQuestionKeyboardHandler implements ArrowKeyHandler, EnterKeyHandler
 {
     /**
      * @var
@@ -29,41 +32,33 @@ class SingleChoiceQuestionKeyboardHandler implements KeyboardHandler
      * @var Keyboard
      */
     private $keyboard;
+    /**
+     * @var SingleChoiceQuestionState
+     */
+    private $state;
 
-    public function __construct(Keyboard $keyboard, SingleChoiceQuestionFormatter $questionFormatter, RedrawableTextWriter $writer, $question, $choices)
+    public function __construct(Keyboard $keyboard, SingleChoiceQuestionFormatter $questionFormatter, RedrawableTextWriter $writer, SingleChoiceQuestionState $state)
     {
-        $this->question = $question;
-        $this->choices = $choices;
-        $this->selectedChoiceIndex = 0;
-
         $this->questionFormatter = $questionFormatter;
         $this->writer = $writer;
         $this->keyboard = $keyboard;
+        $this->state = $state;
     }
 
     public function character($char) {}
     public function leftArrow() {}
     public function rightArrow() {}
-    public function home() {}
-    public function end() {}
-    public function pageUp() {}
-    public function pageDown() {}
-    public function backspace() {}
-    public function tab() {}
 
-    
     public function upArrow()
     {
-        $this->selectedChoiceIndex = $this->selectedChoiceIndex - 1;
-        $this->selectedChoiceIndex = ($this->selectedChoiceIndex + count($this->choices)) % count($this->choices);
+        $this->state->upArrow();
 
         $this->updateChoice();
     }
 
     public function downArrow()
     {
-        $this->selectedChoiceIndex = $this->selectedChoiceIndex + 1;
-        $this->selectedChoiceIndex = ($this->selectedChoiceIndex + count($this->choices)) % count($this->choices);
+        $this->state->downArrow();
 
         $this->updateChoice();
     }
@@ -72,12 +67,12 @@ class SingleChoiceQuestionKeyboardHandler implements KeyboardHandler
     private function updateChoice()
     {
         $this->writer->write(
-            $this->questionFormatter->format($this->choices, $this->selectedChoiceIndex)
+            $this->questionFormatter->format($this->state)
         );
     }
 
     public function enter()
     {
-        $this->keyboard->stopInteraction($this->choices[$this->selectedChoiceIndex]);
+        $this->keyboard->stopInteraction($this->state->selectedIndex());
     }
 }

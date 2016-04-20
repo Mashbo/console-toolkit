@@ -4,15 +4,16 @@ namespace Mashbo\ConsoleToolkit\Widgets\Choice\Single;
 
 use Mashbo\ConsoleToolkit\Ansi\Ansi;
 use Mashbo\ConsoleToolkit\Terminal;
+use Mashbo\ConsoleToolkit\Widgets\Choice\ChoiceList;
 
 class SingleChoiceQuestionFormatter
 {
-    public function format(array $choices, $selectedIndex)
+    public function format(SingleChoiceQuestionState $state)
     {
         $choicesString = '';
-        foreach ($choices as $index => $choice) {
+        foreach ($state->choices() as $index => $choice) {
 
-            $selected = $index == $selectedIndex;
+            $selected = $state->indexIsSelected($index);
             $choicesString .= " ";
 
             $choicesString .= $selected

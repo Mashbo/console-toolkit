@@ -2,8 +2,9 @@
 
 namespace Mashbo\ConsoleToolkit\Widgets\Choice\Single;
 
-use Mashbo\ConsoleToolkit\Keyboard;
+use Mashbo\ConsoleToolkit\Keyboard\Keyboard;
 use Mashbo\ConsoleToolkit\Terminal;
+use Mashbo\ConsoleToolkit\Widgets\Choice\ChoiceList;
 use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextWriter;
 
 class SingleChoiceQuestionHelper
@@ -31,18 +32,19 @@ class SingleChoiceQuestionHelper
 
     public function ask($question, $choices)
     {
+        $choices = ChoiceList::fromAssocArray($choices);
         $this->terminal->write($question . "\n");
 
         $writer = new RedrawableTextWriter($this->terminal);
-        $writer->write($this->questionFormatter->format($choices, 0));
+        $initialState = new SingleChoiceQuestionState($question, $choices);
+        $writer->write($this->questionFormatter->format($initialState));
 
         return $this->keyboard->interact(
             new SingleChoiceQuestionKeyboardHandler(
                 $this->keyboard,
                 $this->questionFormatter,
                 $writer,
-                $question,
-                $choices
+                $initialState
             )
         );
     }

@@ -15,11 +15,16 @@ ConsoleToolkit::disableDefaultBehaviour();
 $terminal = new Terminal(STDIN, STDOUT);
 $keyboard = $terminal->keyboard();
 
-$multipleChoiceQuestionHelper = new MultipleChoiceQuestionHelper($keyboard, $terminal, new MultipleChoiceQuestionFormatter());
+//$multipleChoiceQuestionHelper = new MultipleChoiceQuestionHelper($keyboard, $terminal, new MultipleChoiceQuestionFormatter());
+//
+//$services = $multipleChoiceQuestionHelper->ask('Services to enable', ['Web (80)', 'SSH (22)', 'FTP (21)']);
+//$terminal->write("You chose " . implode(', ', $services) . "\n\n");
 
-$services = $multipleChoiceQuestionHelper->ask('Services to enable', ['Web (80)', 'SSH (22)', 'FTP (21)']);
-$terminal->write("You chose " . implode(', ', $services) . "\n\n");
+
+$seed = $terminal->interaction()->choice()->single()->build()->ask('Seed', ['symfony' => 'Symfony Framework', 'magento' => 'Magento Ecommerce']);
+var_dump($seed);
 
 
-$singleLineTextValueHelper = new TextQuestionHelper($keyboard, $terminal);
-$terminal->write("\nYou chose: " . $singleLineTextValueHelper->ask('What\'s your project called?') . "\n");
+
+//$singleLineTextValueHelper = new TextQuestionHelper($keyboard, $terminal);
+//$terminal->write("\nYou chose: " . $singleLineTextValueHelper->ask('What\'s your project called?') . "\n");

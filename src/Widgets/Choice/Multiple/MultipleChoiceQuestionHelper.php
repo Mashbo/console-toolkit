@@ -2,9 +2,8 @@
 
 namespace Mashbo\ConsoleToolkit\Widgets\Choice\Multiple;
 
-use Mashbo\ConsoleToolkit\Keyboard;
+use Mashbo\ConsoleToolkit\Keyboard\Keyboard;
 use Mashbo\ConsoleToolkit\Terminal;
-use Mashbo\ConsoleToolkit\Widgets\Choice\Multiple\MultipleChoiceQuestionFormatter;
 use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextWriter;
 
 class MultipleChoiceQuestionHelper

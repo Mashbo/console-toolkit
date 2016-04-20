@@ -3,8 +3,8 @@
 namespace Mashbo\ConsoleToolkit\Tests\Unit;
 
 use Mashbo\ConsoleToolkit\Exceptions\TerminalRequiresStreamException;
-use Mashbo\ConsoleToolkit\Keyboard;
-use Mashbo\ConsoleToolkit\KeyboardHandlers\EchoKeyboardHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\Handlers\EchoKeyboardHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Keyboard;
 use Mashbo\ConsoleToolkit\Terminal;
 use Mashbo\ConsoleToolkit\Tests\Doubles\InputStreamStub;
 

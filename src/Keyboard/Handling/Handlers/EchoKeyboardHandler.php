@@ -1,6 +1,6 @@
 <?php
 
-namespace Mashbo\ConsoleToolkit\KeyboardHandlers;
+namespace Mashbo\ConsoleToolkit\Keyboard\Handling\Handlers;
 
 class EchoKeyboardHandler extends NullKeyboardHandler
 {

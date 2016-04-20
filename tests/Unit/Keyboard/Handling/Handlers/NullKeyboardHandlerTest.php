@@ -1,8 +1,8 @@
 <?php
 
-namespace Mashbo\ConsoleToolkit\Tests\Unit\KeyboardHandlers;
+namespace Mashbo\ConsoleToolkit\Tests\Unit\Keyboard\Handling\Handlers;
 
-use Mashbo\ConsoleToolkit\KeyboardHandlers\NullKeyboardHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\Handlers\NullKeyboardHandler;
 
 class NullKeyboardHandlerTest extends \PHPUnit_Framework_TestCase
 {

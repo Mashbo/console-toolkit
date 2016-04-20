@@ -4,7 +4,8 @@ namespace Mashbo\ConsoleToolkit;
 
 use Mashbo\ConsoleToolkit\Exceptions\TerminalRequiresStreamException;
 use Mashbo\ConsoleToolkit\Interaction\InteractionList;
-use Mashbo\ConsoleToolkit\KeyboardHandlers\NullKeyboardHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\Handlers\NullKeyboardHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Keyboard;
 
 class Terminal
 {
