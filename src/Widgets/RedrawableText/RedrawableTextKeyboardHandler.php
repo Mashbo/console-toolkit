@@ -2,10 +2,13 @@
 
 namespace Mashbo\ConsoleToolkit\Widgets\RedrawableText;
 
-use Mashbo\ConsoleToolkit\Keyboard;
-use Mashbo\ConsoleToolkit\KeyboardHandler;
 
-class RedrawableTextKeyboardHandler implements KeyboardHandler
+use Mashbo\ConsoleToolkit\Keyboard\Handling\BackspaceKeyHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\CharacterKeyHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Handling\EnterKeyHandler;
+use Mashbo\ConsoleToolkit\Keyboard\Keyboard;
+
+class RedrawableTextKeyboardHandler implements CharacterKeyHandler, BackspaceKeyHandler, EnterKeyHandler
 {
     private $currentValue = '';
     private $previousValueLength = 0;

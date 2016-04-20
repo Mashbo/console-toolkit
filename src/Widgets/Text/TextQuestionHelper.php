@@ -2,7 +2,7 @@
 
 namespace Mashbo\ConsoleToolkit\Widgets\Text;
 
-use Mashbo\ConsoleToolkit\Keyboard;
+use Mashbo\ConsoleToolkit\Keyboard\Keyboard;
 use Mashbo\ConsoleToolkit\Terminal;
 use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextKeyboardHandler;
 use Mashbo\ConsoleToolkit\Widgets\RedrawableText\RedrawableTextWriter;

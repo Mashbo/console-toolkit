@@ -4,6 +4,7 @@ namespace Mashbo\ConsoleToolkit\Interaction;
 
 use Mashbo\ConsoleToolkit\Terminal;
 use Mashbo\ConsoleToolkit\Widgets\Choice\ChoiceWidgetBuilder;
+use Mashbo\ConsoleToolkit\Widgets\Text\TextQuestionHelper;
 
 final class InteractionList
 {
@@ -22,5 +23,10 @@ final class InteractionList
     public function choice()
     {
         return new ChoiceWidgetBuilder($this->terminal);
+    }
+
+    public function text()
+    {
+        return new TextQuestionHelper($this->terminal->keyboard(), $this->terminal);
     }
 }
