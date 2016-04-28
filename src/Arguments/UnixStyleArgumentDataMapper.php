@@ -31,7 +31,7 @@ class UnixStyleArgumentDataMapper implements ArgumentDataMapper
     {
         if (strlen($token) > 4 && substr($token, 0, 2) == '--') {
             $keyValue = substr($token, 2);
-            preg_match('/^([a-z\-]+)=(.*)$/', $keyValue, $parts);
+            preg_match('/^([a-z\-\.]+)=(.*)$/', $keyValue, $parts);
 
             $resolvedArgs[$this->mapping[$parts[1]]] = $parts[2];
             return;

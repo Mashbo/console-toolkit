@@ -26,4 +26,12 @@ class SingleCommandScriptTest extends \PHPUnit_Framework_TestCase
         ];
         $this->assertSame($expected, $mapper->resolve(ArgumentList::fromArgv(['script', '--first=1', '--second=2'])));
     }
+    public function test_named_arguments_with_dots_can_be_mapped()
+    {
+        $mapper = new UnixStyleArgumentDataMapper(['first.arg' => 'number1']);
+        $expected = [
+            'number1'   => '1',
+        ];
+        $this->assertSame($expected, $mapper->resolve(ArgumentList::fromArgv(['script', '--first.arg=1'])));
+    }
 }
