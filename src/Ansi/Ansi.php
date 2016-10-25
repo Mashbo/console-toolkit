@@ -38,6 +38,45 @@ final class Ansi
         return self::changeForegroundColour($text, self::$fgColours[__FUNCTION__]);
     }
 
+    public static function black($text)
+    {
+        return self::changeForegroundColour($text, self::$fgColours[__FUNCTION__]);
+    }
+
+    public static function magenta($text)
+    {
+        return self::changeForegroundColour($text, self::$fgColours[__FUNCTION__]);
+    }
+
+    public static function cyan($text)
+    {
+        return self::changeForegroundColour($text, self::$fgColours[__FUNCTION__]);
+    }
+
+    public static function lightGray($text)
+    {
+        return self::changeForegroundColour($text, self::$fgColours[__FUNCTION__]);
+    }
+
+    public static function lightGreen($text)
+    {
+        return self::changeForegroundColour($text, self::$fgColours[__FUNCTION__]);
+    }
+
+    public static function lightMagenta($text)
+    {
+        return self::changeForegroundColour($text, self::$fgColours[__FUNCTION__]);
+    }
+
+    public static function lightCyan($text)
+    {
+        return self::changeForegroundColour($text, self::$fgColours[__FUNCTION__]);
+    }
+
+    public static function darkGray($text)
+    {
+        return self::changeForegroundColour($text, self::$fgColours[__FUNCTION__]);
+    }
 
     public static function red($text)
     {
