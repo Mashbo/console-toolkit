@@ -11,7 +11,7 @@ class MultipleChoiceQuestionTest extends \PHPUnit_Framework_TestCase
 {
     public function test_pressing_enter_selects_no_choices()
     {
-        $in = InputStreamStub::withInput(chr(10));
+        $in = InputStreamStub::withInput(chr(13));
         $out = OutputStreamSpy::create();
 
         $terminal = new Terminal($in, $out);
@@ -30,7 +30,7 @@ class MultipleChoiceQuestionTest extends \PHPUnit_Framework_TestCase
 
     public function test_pressing_down_then_space_then_enter_selects_second_choice()
     {
-        $in = InputStreamStub::withInput("\e[B " . chr(10));
+        $in = InputStreamStub::withInput("\e[B " . chr(13));
         $out = OutputStreamSpy::create();
 
         $terminal = new Terminal($in, $out);
