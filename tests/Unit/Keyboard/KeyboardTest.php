@@ -93,7 +93,7 @@ class KeyboardTest extends \PHPUnit_Framework_TestCase
     public function ansiCodeToMethodMappingDataProvider()
     {
         return [
-            [EnterKeyHandler::class,        chr(10),           'enter'],
+            [EnterKeyHandler::class,        chr(13),           'enter'],
             [ArrowKeyHandler::class,        chr(27) . "[A",    'upArrow'],
             [ArrowKeyHandler::class,        chr(27) . "[B",    'downArrow'],
             [ArrowKeyHandler::class,        chr(27) . "[C",    'rightArrow'],

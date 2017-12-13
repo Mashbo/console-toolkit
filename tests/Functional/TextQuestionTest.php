@@ -11,7 +11,7 @@ class TextQuestionTest extends \PHPUnit_Framework_TestCase
 {
     public function test_typing_string_then_enter_returns_valid_string()
     {
-        $in = InputStreamStub::withInput("World!" . chr(10));
+        $in = InputStreamStub::withInput("World!" . chr(13));
         $out = OutputStreamSpy::create();
 
         $terminal = new Terminal($in, $out);
