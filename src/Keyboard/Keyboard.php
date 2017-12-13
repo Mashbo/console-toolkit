@@ -57,7 +57,7 @@ class Keyboard
             ],
             chr(127)    => 'backspace',
             chr(9)      => 'tab',
-            chr(10)     => 'enter'
+            chr(13)     => 'enter'
         ];
 
         $mapping = $multibyteChars;
